@@ -85,6 +85,6 @@ This project is deployed on **Vercel**:
 **https://nirmaan-cyan.vercel.app/**
 
 To deploy yourself: 
-1. Upload the project to GitHub\
-2. Import the repository into Vercel\
+1. Upload the project to GitHub
+2. Import the repository into Vercel
 3. Deploy: Vercel automatically serves static files
