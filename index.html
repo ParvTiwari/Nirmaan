@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication Skills Scorer - Nirmaan AI</title>
+    <style>
+        :root {
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-error: #ef4444;
+            --color-bg: #f8fafc;
+            --color-surface: #ffffff;
+            --color-text: #1e293b;
+            --color-text-secondary: #64748b;
+            --color-border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--color-surface);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-section textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 15px;
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .input-section textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .criteria-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .criterion-card {
+            background: var(--color-surface);
+            border-left: 4px solid var(--color-primary);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+
+        .criterion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .criterion-name {
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .criterion-score {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+
+        .score-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-success), var(--color-primary));
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .criterion-feedback {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+        }
+
+        .keyword-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .keyword-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #dbeafe;
+            color: #1e40af;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid var(--color-primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: var(--color-text-secondary);
+        }
+
+        .results-section {
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎤 Communication Skills Scorer</h1>
+            <p>Nirmaan AI - Analyze and score self-introduction transcripts</p>
+        </header>
+
+        <div class="main-content">
+            <div class="card input-section">
+                <h2>📝 Input Transcript</h2>
+                <div class="info-box">
+                    <p><strong>Evaluation Criteria:</strong></p>
+                    <ul>
+                        <li>Content &amp; Structure (40%)</li>
+                        <li>Language &amp; Grammar (30%)</li>
+                        <li>Clarity &amp; Engagement (30%)</li>
+                    </ul>
+                </div>
+                <textarea id="transcriptInput" placeholder="Paste your self-introduction transcript here...
+
+Example:
+Hello everyone, my name is Sarah. I am 15 years old, studying in class 10th from Springfield High School. I live with my family of four - my parents, my younger brother, and me. In my free time, I love playing basketball and reading science fiction novels. My dream is to become a software engineer and create apps that help people. Thank you for listening!"></textarea>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="analyzeTranscript()">
+                        <span>🔍</span> Analyze Transcript
+                    </button>
+                    <button class="btn-secondary" onclick="loadSample()">
+                        📋 Load Sample
+                    </button>
+                    <button class="btn-secondary" onclick="clearInput()">
+                        🗑️ Clear
+                    </button>
+                </div>
+            </div>
+
+            <div class="card results-section" id="resultsSection">
+                <h2>📊 Analysis Results</h2>
+                <div class="score-display">
+                    <div class="score-circle" id="overallScore">--</div>
+                    <h3>Overall Score</h3>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="wordCount">--</div>
+                        <div class="stat-label">Words</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="sentenceCount">--</div>
+                        <div class="stat-label">Sentences</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="speechRate">--</div>
+                        <div class="stat-label">WPM</div>
+                    </div>
+                </div>
+
+                <div class="criteria-grid" id="criteriaGrid"></div>
+            </div>
+        </div>
+
+        <div class="loading" id="loadingIndicator" style="display: none;">
+            <div class="spinner"></div>
+            <p>Analyzing transcript...</p>
+        </div>
+    </div>
+
+    <script>
+        const SAMPLE_TEXT = `Hello everyone, myself Muskan, studying in class 8th B section from Christ Public School. 
+I am 13 years old. I live with my family. There are 3 people in my family, me, my mother and my father.
+One special thing about my family is that they are very kind hearted to everyone and soft spoken. One thing I really enjoy is play, playing cricket and taking wickets.
+A fun fact about me is that I see in mirror and talk by myself. One thing people don't know about me is that I once stole a toy from one of my cousin.
+My favorite subject is science because it is very interesting. Through science I can explore the whole world and make the discoveries and improve the lives of others. 
+Thank you for listening.`;
+
+        function loadSample() {
+            document.getElementById('transcriptInput').value = SAMPLE_TEXT;
+        }
+
+        function clearInput() {
+            document.getElementById('transcriptInput').value = '';
+            document.getElementById('resultsSection').classList.remove('show');
+        }
+
+        async function analyzeTranscript() {
+            const transcript = document.getElementById('transcriptInput').value.trim();
+            
+            if (!transcript) {
+                alert('Please enter a transcript to analyze.');
+                return;
+            }
+
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('resultsSection').classList.remove('show');
+
+            try {
+                const result = await scoreTranscript(transcript);
+                displayResults(result);
+            } catch (error) {
+                alert('Error analyzing transcript: ' + error.message);
+            } finally {
+                document.getElementById('loadingIndicator').style.display = 'none';
+            }
+        }
+
+        async function scoreTranscript(transcript) {
+            const text = transcript.toLowerCase();
+            const words = transcript.split(/\s+/).filter(w => w.length > 0);
+            const wordCount = words.length;
+            const sentences = transcript.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const sentenceCount = sentences.length;
+
+            const criteria = [];
+            let totalScore = 0;
+
+            // 1. Salutation Score (5 points, 40% weight)
+            const salutationResult = scoreSalutation(text);
+            criteria.push({
+                name: 'Salutation',
+                score: salutationResult.score,
+                maxScore: 5,
+                weight: 40,
+                feedback: salutationResult.feedback,
+                keywords: salutationResult.keywords
+            });
+            totalScore += (salutationResult.score / 5) * 40;
+
+            // 2. Keyword Presence (30 points, direct weight)
+            const keywordResult = scoreKeywords(text);
+            criteria.push({
+                name: 'Keyword Presence',
+                score: keywordResult.score,
+                maxScore: 30,
+                weight: 30,
+                feedback: keywordResult.feedback,
+                keywords: keywordResult.keywords
+            });
+            totalScore += keywordResult.score;
+
+            // 3. Flow/Structure (5 points, in 40% category)
+            const flowResult = scoreFlow(transcript);
+            criteria.push({
+                name: 'Flow &amp; Structure',
+                score: flowResult.score,
+                maxScore: 5,
+                weight: 5,
+                feedback: flowResult.feedback,
+                keywords: []
+            });
+            totalScore += flowResult.score;
+
+            // 4. Speech Rate (10 points, 10% weight)
+            const avgDuration = wordCount * 0.4;
+            const wpm = Math.round((wordCount / avgDuration) * 60);
+            const speechRateResult = scoreSpeechRate(wpm);
+            criteria.push({
+                name: 'Speech Rate',
+                score: speechRateResult.score,
+                maxScore: 10,
+                weight: 10,
+                feedback: `${wpm} WPM - ${speechRateResult.feedback}`,
+                keywords: []
+            });
+            totalScore += speechRateResult.score;
+
+            // 5. Grammar Score (10 points, 20% weight)
+            const grammarResult = scoreGrammar(transcript);
+            criteria.push({
+                name: 'Grammar Quality',
+                score: grammarResult.score,
+                maxScore: 10,
+                weight: 20,
+                feedback: grammarResult.feedback,
+                keywords: []
+            });
+            totalScore += (grammarResult.score / 10) * 20;
+
+            // 6. Vocabulary Richness (10 points, in 20% category)
+            const vocabResult = scoreVocabulary(words);
+            criteria.push({
+                name: 'Vocabulary Richness',
+                score: vocabResult.score,
+                maxScore: 10,
+                weight: 10,
+                feedback: vocabResult.feedback,
+                keywords: []
+            });
+            totalScore += vocabResult.score;
+
+            // 7. Filler Words (15 points, 15% weight)
+            const fillerResult = scoreFillerWords(text, wordCount);
+            criteria.push({
+                name: 'Clarity (Filler Words)',
+                score: fillerResult.score,
+                maxScore: 15,
+                weight: 15,
+                feedback: fillerResult.feedback,
+                keywords: fillerResult.keywords
+            });
+            totalScore += fillerResult.score;
+
+            // 8. Sentiment/Engagement (15 points, 15% weight)
+            const sentimentResult = scoreSentiment(text);
+            criteria.push({
+                name: 'Engagement &amp; Positivity',
+                score: sentimentResult.score,
+                maxScore: 15,
+                weight: 15,
+                feedback: sentimentResult.feedback,
+                keywords: []
+            });
+            totalScore += sentimentResult.score;
+
+            return {
+                overallScore: Math.round(totalScore),
+                wordCount: wordCount,
+                sentenceCount: sentenceCount,
+                speechRate: wpm,
+                criteria: criteria
+            };
+        }
+
+        function scoreSalutation(text) {
+            const salutations = {
+                excellent: ['i am excited', 'feeling great', 'excited to introduce'],
+                good: ['hello everyone', 'good morning', 'good afternoon', 'good evening', 'good day'],
+                normal: ['hi', 'hello']
+            };
+
+            for (const phrase of salutations.excellent) {
+                if (text.includes(phrase)) {
+                    return { score: 5, feedback: 'Excellent opening with enthusiasm!', keywords: [phrase] };
+                }
+            }
+
+            for (const phrase of salutations.good) {
+                if (text.includes(phrase)) {
+                    return { score: 4, feedback: 'Good formal greeting', keywords: [phrase] };
+                }
+            }
+
+            for (const phrase of salutations.normal) {
+                if (text.includes(phrase)) {
+                    return { score: 2, feedback: 'Basic greeting provided', keywords: [phrase] };
+                }
+            }
+
+            return { score: 0, feedback: 'No clear salutation found', keywords: [] };
+        }
+
+        function scoreKeywords(text) {
+            const mustHave = {
+                name: /(my name|myself|i am|i'm)\s+\w+/,
+                age: /\d+\s+years?\s+old|age\s+\d+/,
+                school: /(school|class|grade|studying)/,
+                family: /family|parents?|mother|father|brother|sister/,
+                hobby: /(hobby|hobbies|interest|enjoy|like|love|play)/
+            };
+
+            const goodToHave = {
+                familyDetails: /(kind|caring|supportive|loving)\s+(family|parents)/,
+                location: /(from|live in|belong)/,
+                goal: /(dream|goal|ambition|want to|aspire)/,
+                unique: /(fun fact|interesting|unique|special)/
+            };
+
+            let score = 0;
+            const found = [];
+
+            for (const [key, pattern] of Object.entries(mustHave)) {
+                if (pattern.test(text)) {
+                    score += 4;
+                    found.push(key);
+                }
+            }
+
+            for (const [key, pattern] of Object.entries(goodToHave)) {
+                if (pattern.test(text)) {
+                    score += 2;
+                    found.push(key);
+                }
+            }
+
+            return {
+                score: Math.min(score, 30),
+                feedback: `Found ${found.length} key elements: ${found.join(', ')}`,
+                keywords: found
+            };
+        }
+
+        function scoreFlow(transcript) {
+            const sections = {
+                salutation: /^(hello|hi|good\s+(morning|afternoon|evening)|greetings)/i,
+                name: /(my name|myself|i am|i'm)\s+\w+/i,
+                closing: /(thank you|thanks|grateful|appreciate)/i
+            };
+
+            let hasOrder = true;
+            let lastIndex = -1;
+
+            for (const [section, pattern] of Object.entries(sections)) {
+                const match = transcript.match(pattern);
+                if (match) {
+                    const currentIndex = match.index;
+                    if (currentIndex < lastIndex) {
+                        hasOrder = false;
+                        break;
+                    }
+                    lastIndex = currentIndex;
+                }
+            }
+
+            return hasOrder 
+                ? { score: 5, feedback: 'Introduction follows logical order' }
+                : { score: 2, feedback: 'Structure could be improved' };
+        }
+
+        function scoreSpeechRate(wpm) {
+            if (wpm >= 111 && wpm <= 140) return { score: 10, feedback: 'Ideal pace' };
+            if (wpm >= 141 && wpm <= 160) return { score: 6, feedback: 'Slightly fast' };
+            if (wpm >= 81 && wpm <= 110) return { score: 6, feedback: 'Slightly slow' };
+            if (wpm > 160) return { score: 2, feedback: 'Too fast' };
+            return { score: 2, feedback: 'Too slow' };
+        }
+
+        function scoreGrammar(text) {
+            const commonErrors = [
+                /\bi is\b/g, /\bhe are\b/g, /\bshe are\b/g, /\bthey is\b/g,
+                /\bdoesn't has\b/g, /\bdon't has\b/g, /\bgo to school\b/g
+            ];
+
+            let errorCount = 0;
+            for (const pattern of commonErrors) {
+                const matches = text.match(pattern);
+                if (matches) errorCount += matches.length;
+            }
+
+            const errorsPer100 = (errorCount / text.split(/\s+/).length) * 100;
+            const grammarScore = Math.max(0, 1 - Math.min(errorsPer100 / 10, 1));
+
+            let score = 10;
+            if (grammarScore >= 0.9) score = 10;
+            else if (grammarScore >= 0.7) score = 8;
+            else if (grammarScore >= 0.5) score = 6;
+            else if (grammarScore >= 0.3) score = 4;
+            else score = 2;
+
+            return {
+                score: score,
+                feedback: `Grammar quality: ${(grammarScore * 100).toFixed(0)}% (${errorCount} issues detected)`
+            };
+        }
+
+        function scoreVocabulary(words) {
+            const uniqueWords = new Set(words.map(w => w.toLowerCase()));
+            const ttr = uniqueWords.size / words.length;
+
+            let score = 10;
+            if (ttr >= 0.9) score = 10;
+            else if (ttr >= 0.7) score = 8;
+            else if (ttr >= 0.5) score = 6;
+            else if (ttr >= 0.3) score = 4;
+            else score = 2;
+
+            return {
+                score: score,
+                feedback: `TTR: ${(ttr * 100).toFixed(1)}% (${uniqueWords.size} unique words)`
+            };
+        }
+
+        function scoreFillerWords(text, wordCount) {
+            const fillers = ['um', 'uh', 'like', 'you know', 'so', 'actually', 'basically', 'right', 'i mean', 'well', 'kinda', 'sort of', 'okay', 'hmm', 'ah'];
+            
+            let fillerCount = 0;
+            const found = [];
+
+            for (const filler of fillers) {
+                const regex = new RegExp(`\\b${filler}\\b`, 'gi');
+                const matches = text.match(regex);
+                if (matches) {
+                    fillerCount += matches.length;
+                    found.push(filler);
+                }
+            }
+
+            const fillerRate = (fillerCount / wordCount) * 100;
+
+            let score = 15;
+            if (fillerRate <= 3) score = 15;
+            else if (fillerRate <= 6) score = 12;
+            else if (fillerRate <= 9) score = 9;
+            else if (fillerRate <= 12) score = 6;
+            else score = 3;
+
+            return {
+                score: score,
+                feedback: `${fillerRate.toFixed(1)}% filler rate (${fillerCount} filler words)`,
+                keywords: found
+            };
+        }
+
+        function scoreSentiment(text) {
+            const positiveWords = ['love', 'enjoy', 'excited', 'happy', 'great', 'wonderful', 'amazing', 'excellent', 'best', 'favorite', 'interesting', 'fun', 'grateful', 'thankful', 'passionate'];
+            const negativeWords = ['hate', 'dislike', 'boring', 'terrible', 'worst', 'bad', 'difficult', 'problem', 'issue'];
+
+            let positiveCount = 0;
+            let negativeCount = 0;
+
+            for (const word of positiveWords) {
+                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                const matches = text.match(regex);
+                if (matches) positiveCount += matches.length;
+            }
+
+            for (const word of negativeWords) {
+                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                const matches = text.match(regex);
+                if (matches) negativeCount += matches.length;
+            }
+
+            const totalWords = text.split(/\s+/).length;
+            const positivityScore = positiveCount / totalWords;
+
+            let score = 15;
+            if (positivityScore >= 0.05) score = 15;
+            else if (positivityScore >= 0.03) score = 12;
+            else if (positivityScore >= 0.02) score = 9;
+            else if (positivityScore >= 0.01) score = 6;
+            else score = 3;
+
+            if (negativeCount > positiveCount) {
+                score = Math.max(3, score - 5);
+            }
+
+            return {
+                score: score,
+                feedback: `${positiveCount} positive words, ${negativeCount} negative - ${positivityScore >= 0.03 ? 'Engaging' : 'Neutral'} tone`
+            };
+        }
+
+        function displayResults(result) {
+            document.getElementById('overallScore').textContent = result.overallScore;
+            document.getElementById('wordCount').textContent = result.wordCount;
+            document.getElementById('sentenceCount').textContent = result.sentenceCount;
+            document.getElementById('speechRate').textContent = result.speechRate;
+
+            const criteriaGrid = document.getElementById('criteriaGrid');
+            criteriaGrid.innerHTML = '';
+
+            result.criteria.forEach(criterion => {
+                const percentage = (criterion.score / criterion.maxScore) * 100;
+                
+                const card = document.createElement('div');
+                card.className = 'criterion-card';
+                card.innerHTML = `
+                    <div class="criterion-header">
+                        <span class="criterion-name">${criterion.name}</span>
+                        <span class="criterion-score">
+                            ${criterion.score}/${criterion.maxScore}
+                            <span style="color: var(--color-text-secondary); font-size: 12px;">(${criterion.weight}%)</span>
+                        </span>
+                    </div>
+                    <div class="score-bar">
+                        <div class="score-bar-fill" style="width: ${percentage}%"></div>
+                    </div>
+                    <div class="criterion-feedback">${criterion.feedback}</div>
+                    ${criterion.keywords && criterion.keywords.length > 0 ? `
+                        <div class="keyword-tags">
+                            ${criterion.keywords.map(kw => `<span class="keyword-tag">${kw}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                `;
+                
+                criteriaGrid.appendChild(card);
+            });
+
+            document.getElementById('resultsSection').classList.add('show');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
